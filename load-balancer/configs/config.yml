@@ -1,0 +1,22 @@
+http: 
+  port: 8080
+  maxHeaderMegabytes: 1
+  readTimeout: 1000ms
+  writeTimeout: 1000ms
+
+balancer:
+  healthCheckTime: 5
+  backends:
+    - http://backend1:8081
+    - http://backend2:8082
+    - http://backend3:8083
+
+redis:
+  host: redis
+  port: 6379
+
+limiter:
+  capacity: 2000
+  ratePerSec: 600
+  ttl: 300
+  refillTime: 1

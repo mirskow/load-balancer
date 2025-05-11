@@ -1,0 +1,55 @@
+version: '3'
+
+services:
+  backend1:
+    build:
+      context: ./backends
+    environment:
+      - PORT=8081
+    ports:
+      - "8081:8081"
+
+  backend2:
+    build:
+      context: ./backends
+    environment:
+      - PORT=8082
+    ports:
+      - "8082:8082"
+
+  backend3:
+    build:
+      context: ./backends
+    environment:
+      - PORT=8083
+    ports:
+      - "8083:8083"
+
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: ["redis-server", "--appendonly", "yes"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      retries: 5
+      start_period: 5s
+      timeout: 5s
+
+  load-balancer:
+    build:
+      context: ./load-balancer
+    ports:
+      - "8080:8080"
+    depends_on:
+      - backend1
+      - backend2
+      - backend3
+      - redis
+
+volumes:
+  redis_data:

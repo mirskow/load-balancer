@@ -1,0 +1,21 @@
+http:
+  maxHeaderMegabytes: 1
+  readTimeout: 1000ms
+  writeTimeout: 1000ms
+
+balancer:
+  healthCheckTime: 1
+  backends:
+    - http://localhost:8081
+    - http://localhost:8082
+    - http://localhost:8083
+
+redis:
+  host: localhost
+  port: 6380
+
+limiter:
+  capacity: 2000
+  ratePerSec: 600
+  ttl: 300
+  refillTime: 1
